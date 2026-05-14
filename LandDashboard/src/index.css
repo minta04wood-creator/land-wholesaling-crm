@@ -4,26 +4,26 @@
 
 @layer base {
   :root {
-    --background: 224 71% 4%;
-    --foreground: 213 31% 91%;
-    --card: 224 71% 4%;
-    --card-foreground: 213 31% 91%;
-    --popover: 224 71% 4%;
+    --background: 230 25% 6%;
+    --foreground: 210 40% 98%;
+    --card: 230 25% 8%;
+    --card-foreground: 210 40% 98%;
+    --popover: 230 25% 8%;
     --popover-foreground: 215 20.2% 65.1%;
-    --primary: 210 40% 98%;
+    --primary: 250 100% 75%;
     --primary-foreground: 222.2 47.4% 1.2%;
-    --secondary: 222.2 47.4% 11.2%;
+    --secondary: 230 20% 12%;
     --secondary-foreground: 210 40% 98%;
-    --muted: 223 47% 11%;
+    --muted: 230 20% 12%;
     --muted-foreground: 215.4 16.3% 56.9%;
-    --accent: 216 34% 17%;
+    --accent: 230 20% 16%;
     --accent-foreground: 210 40% 98%;
     --destructive: 0 63% 31%;
     --destructive-foreground: 210 40% 98%;
-    --border: 216 34% 17%;
-    --input: 216 34% 17%;
-    --ring: 212.7 26.8% 83.9%;
-    --radius: 0.5rem;
+    --border: 230 20% 15%;
+    --input: 230 20% 15%;
+    --ring: 250 100% 75%;
+    --radius: 0.75rem;
   }
 }
  
@@ -32,6 +32,19 @@
     @apply border-border;
   }
   body {
-    @apply bg-background text-foreground;
+    @apply bg-background text-foreground bg-[radial-gradient(ellipse_80%_80%_at_50%_-20%,rgba(120,119,198,0.15),rgba(255,255,255,0))];
+    min-height: 100vh;
+  }
+}
+
+@layer utilities {
+  .glass-panel {
+    @apply bg-background/40 backdrop-blur-xl border border-white/[0.05] shadow-[0_8px_32px_0_rgba(0,0,0,0.3)];
+  }
+  .premium-glow {
+    @apply relative before:absolute before:inset-0 before:bg-gradient-to-r before:from-primary/50 before:to-emerald-500/50 before:blur-xl before:opacity-0 hover:before:opacity-100 before:transition-opacity before:duration-500 before:-z-10;
+  }
+  .text-gradient {
+    @apply bg-clip-text text-transparent bg-gradient-to-r from-primary via-indigo-400 to-emerald-400;
   }
 }
