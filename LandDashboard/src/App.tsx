@@ -1,6 +1,9 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useRef } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
-import { Search, MapPin, Building2, Phone, DollarSign, LayoutDashboard, CheckCircle2, ChevronRight, FileText, Globe, AlertTriangle, Columns, LayoutGrid, Menu, X, Sun, Moon, ChevronDown } from 'lucide-react'
+import { Search, MapPin, Building2, Phone, DollarSign, LayoutDashboard, CheckCircle2, ChevronRight, FileText, Globe, AlertTriangle, Columns, LayoutGrid, Menu, X, Sun, Moon, ChevronDown, Share2, Link2, Bell, BellOff, StickyNote } from 'lucide-react'
+import { useSwipeable } from 'react-swipeable'
+import { DealNotes } from './DealNotes'
+import { generateBuyerDealSheet, copyShareableLink } from './ShareSheet'
 import { DragDropContext, Droppable, Draggable, DropResult } from '@hello-pangea/dnd'
 import { MapContainer, TileLayer, Marker, Popup } from 'react-leaflet'
 import 'leaflet/dist/leaflet.css'
@@ -47,6 +50,28 @@ export default function App() {
     localStorage.setItem('crm-theme', theme)
     document.documentElement.classList.toggle('dark', theme === 'dark')
   }, [theme])
+
+  // Push notification permission
+  const [notifPermission, setNotifPermission] = useState<NotificationPermission>(
+    'Notification' in window ? Notification.permission : 'denied'
+  )
+  const requestNotifications = async () => {
+    if (!('Notification' in window)) return
+    const permission = await Notification.requestPermission()
+    setNotifPermission(permission)
+    if (permission === 'granted') {
+      new Notification('Land CRM', { body: 'Notifications enabled! You\'ll be alerted on deal updates.', icon: '/favicon.svg' })
+    }
+  }
+  const sendNotification = (title: string, body: string) => {
+    if (notifPermission === 'granted') {
+      new Notification(title, { body, icon: '/favicon.svg' })
+    }
+  }
+
+  const [linkCopied, setLinkCopied] = useState(false)
+
+
 
   // Pipeline State
   const [pipeline, setPipeline] = useState<Record<string, any[]>>(() => {
@@ -165,6 +190,9 @@ export default function App() {
         ...riskData,
         [deal.n]: data.risks || ["Error retrieving risk data."]
       })
+      if (data.risks && data.risks.length > 0) {
+        sendNotification('Risk Alert', `New risks identified for ${deal.ac} acres in ${deal.city}`)
+      }
     } catch (e) {
       console.error(e)
       setRiskData({
@@ -296,6 +324,10 @@ export default function App() {
           <Button variant="ghost" size="icon" className="shrink-0" onClick={() => setTheme(t => t === 'dark' ? 'light' : 'dark')}>
             {theme === 'dark' ? <Sun className="w-4 h-4" /> : <Moon className="w-4 h-4" />}
           </Button>
+          {/* Notification bell */}
+          <Button variant="ghost" size="icon" className="shrink-0 hidden md:flex" onClick={requestNotifications} title={notifPermission === 'granted' ? 'Notifications on' : 'Enable notifications'}>
+            {notifPermission === 'granted' ? <Bell className="w-4 h-4 text-primary" /> : <BellOff className="w-4 h-4" />}
+          </Button>
         </header>
 
         {/* Content Area */}
@@ -382,9 +414,19 @@ export default function App() {
                         {selectedDeal.ac} Acres <span className="text-muted-foreground font-medium text-lg md:text-2xl">in {selectedDeal.city}, GA</span>
                       </DialogTitle>
                     </div>
-                    <div className="flex gap-2">
-                      <Button variant="default" className="bg-emerald-600 hover:bg-emerald-700 text-white shadow-[0_0_20px_rgba(16,185,129,0.3)]" onClick={() => generatePSA(selectedDeal)}>
-                        <FileText className="w-4 h-4 mr-2" /> Generate PSA
+                    <div className="flex gap-2 flex-wrap">
+                      <Button variant="default" className="bg-emerald-600 hover:bg-emerald-700 text-white" onClick={() => generatePSA(selectedDeal)}>
+                        <FileText className="w-4 h-4 mr-2" /> PSA
+                      </Button>
+                      <Button variant="outline" className="border-purple-500/50 text-purple-400 hover:bg-purple-500/10" onClick={() => generateBuyerDealSheet(selectedDeal)}>
+                        <Share2 className="w-4 h-4 mr-2" /> Deal Sheet
+                      </Button>
+                      <Button variant="outline" className="border-blue-500/50 text-blue-400 hover:bg-blue-500/10" onClick={() => {
+                        copyShareableLink(selectedDeal)
+                        setLinkCopied(true)
+                        setTimeout(() => setLinkCopied(false), 2000)
+                      }}>
+                        <Link2 className="w-4 h-4 mr-2" /> {linkCopied ? 'Copied!' : 'Copy Link'}
                       </Button>
                     </div>
                   </div>
@@ -392,11 +434,14 @@ export default function App() {
 
                 <Tabs defaultValue="outreach" className="flex-1 flex flex-col min-h-0">
                   <div className="px-8 border-b border-white/10 bg-black/20 shrink-0">
-                    <TabsList className="w-full justify-start rounded-none border-b-0 bg-transparent p-0 h-14">
-                      <TabsTrigger value="outreach" className="rounded-none border-b-2 border-transparent data-[state=active]:border-primary data-[state=active]:bg-transparent data-[state=active]:text-primary px-6 h-full font-bold uppercase tracking-wider text-xs">Pitch & Scripts</TabsTrigger>
-                      <TabsTrigger value="intel" className="rounded-none border-b-2 border-transparent data-[state=active]:border-primary data-[state=active]:bg-transparent data-[state=active]:text-primary px-6 h-full font-bold uppercase tracking-wider text-xs">Buyer Intel</TabsTrigger>
-                      <TabsTrigger value="risk" className="rounded-none border-b-2 border-transparent data-[state=active]:border-primary data-[state=active]:bg-transparent data-[state=active]:text-primary px-6 h-full font-bold uppercase tracking-wider text-xs">Risk & Env</TabsTrigger>
-                      <TabsTrigger value="scrapers" className="rounded-none border-b-2 border-transparent data-[state=active]:border-primary data-[state=active]:bg-transparent data-[state=active]:text-primary px-6 h-full font-bold uppercase tracking-wider text-xs">Deep Scrape</TabsTrigger>
+                    <TabsList className="w-full justify-start rounded-none border-b-0 bg-transparent p-0 h-14 overflow-x-auto">
+                      <TabsTrigger value="outreach" className="rounded-none border-b-2 border-transparent data-[state=active]:border-primary data-[state=active]:bg-transparent data-[state=active]:text-primary px-4 md:px-6 h-full font-bold uppercase tracking-wider text-xs whitespace-nowrap">Pitch & Scripts</TabsTrigger>
+                      <TabsTrigger value="intel" className="rounded-none border-b-2 border-transparent data-[state=active]:border-primary data-[state=active]:bg-transparent data-[state=active]:text-primary px-4 md:px-6 h-full font-bold uppercase tracking-wider text-xs whitespace-nowrap">Buyer Intel</TabsTrigger>
+                      <TabsTrigger value="risk" className="rounded-none border-b-2 border-transparent data-[state=active]:border-primary data-[state=active]:bg-transparent data-[state=active]:text-primary px-4 md:px-6 h-full font-bold uppercase tracking-wider text-xs whitespace-nowrap">Risk & Env</TabsTrigger>
+                      <TabsTrigger value="notes" className="rounded-none border-b-2 border-transparent data-[state=active]:border-primary data-[state=active]:bg-transparent data-[state=active]:text-primary px-4 md:px-6 h-full font-bold uppercase tracking-wider text-xs whitespace-nowrap">
+                        <StickyNote className="w-3.5 h-3.5 mr-1.5" />Notes
+                      </TabsTrigger>
+                      <TabsTrigger value="scrapers" className="rounded-none border-b-2 border-transparent data-[state=active]:border-primary data-[state=active]:bg-transparent data-[state=active]:text-primary px-4 md:px-6 h-full font-bold uppercase tracking-wider text-xs whitespace-nowrap">Deep Scrape</TabsTrigger>
                     </TabsList>
                   </div>
 
@@ -408,7 +453,9 @@ export default function App() {
                           <div>
                             <h3 className="text-xl font-bold text-amber-500 flex items-center gap-2 mb-2"><Building2 className="w-5 h-5" /> {selectedDeal.seller}</h3>
                             <div className="flex items-center gap-6 text-amber-500/80">
-                              <span className="flex items-center gap-2"><Phone className="w-4 h-4" /> {selectedDeal.sph}</span>
+                              <a href={`tel:${selectedDeal.sph}`} className="flex items-center gap-2 hover:text-amber-400 transition-colors">
+                                <Phone className="w-4 h-4" /> {selectedDeal.sph}
+                              </a>
                             </div>
                           </div>
                           <Button className="bg-amber-500 hover:bg-amber-600 text-amber-950 font-bold" onClick={() => handleCopy(selectedDeal.sph, 'modal-phone')}>
@@ -424,11 +471,13 @@ export default function App() {
                           <div>
                             <h3 className="text-xl font-bold text-blue-400 flex items-center gap-2 mb-2"><Building2 className="w-5 h-5" /> {selectedDeal.b1n}</h3>
                             <div className="flex items-center gap-6 text-blue-400/80">
-                              <span className="flex items-center gap-2"><Phone className="w-4 h-4" /> {selectedDeal.b1p}</span>
+                              <a href={`tel:${selectedDeal.b1p}`} className="flex items-center gap-2 hover:text-blue-300 transition-colors">
+                                <Phone className="w-4 h-4" /> {selectedDeal.b1p}
+                              </a>
                             </div>
                           </div>
-                          <Button className="bg-blue-500 hover:bg-blue-600 text-blue-950 font-bold" onClick={() => handleCopy(selectedDeal.b1p, 'modal-buyer')}>
-                            {copiedId === 'modal-buyer' ? 'Copied!' : 'Copy Info'}
+                          <Button className="bg-blue-500 hover:bg-blue-600 text-blue-950 font-bold" onClick={() => handleCopy(selectedDeal.b1p, 'modal-buyer-phone')}>
+                            {copiedId === 'modal-buyer-phone' ? 'Copied!' : 'Copy Phone'}
                           </Button>
                         </div>
                         <div className="bg-card/50 border border-white/5 rounded-2xl p-6 shadow-inner">
@@ -485,6 +534,16 @@ export default function App() {
                             <p>No risk check performed yet.</p>
                           </div>
                         )}
+                      </TabsContent>
+
+                      <TabsContent value="notes" className="mt-0 animate-in fade-in slide-in-from-bottom-4 duration-500">
+                        <div className="flex items-center justify-between mb-4">
+                          <div>
+                            <h3 className="text-xl font-bold">Activity Log</h3>
+                            <p className="text-muted-foreground text-sm">Track every call, email, and conversation</p>
+                          </div>
+                        </div>
+                        <DealNotes dealId={selectedDeal.n.toString()} />
                       </TabsContent>
 
                       <TabsContent value="scrapers" className="mt-0 space-y-6 animate-in fade-in slide-in-from-bottom-4 duration-500">
@@ -593,91 +652,106 @@ function DealCard({ deal, handleCopy, copiedId, riskData, currentColumn, moveDea
   const [stageOpen, setStageOpen] = useState(false)
   const fee = deal.lv * 0.15
 
+  const handlers = useSwipeable({
+    onSwipedLeft: () => {
+      const idx = COLUMNS.indexOf(currentColumn)
+      if (idx < COLUMNS.length - 1) moveDeal(deal, currentColumn, COLUMNS[idx + 1])
+    },
+    onSwipedRight: () => {
+      const idx = COLUMNS.indexOf(currentColumn)
+      if (idx > 0) moveDeal(deal, currentColumn, COLUMNS[idx - 1])
+    },
+    trackMouse: false,
+    preventScrollOnSwipe: true
+  })
+
   return (
-    <Card className="h-full bg-card border-border hover:border-primary/40 transition-all overflow-hidden group flex flex-col cursor-pointer shadow-sm hover:shadow-md">
-      <CardHeader className="pb-2 pt-3 px-3">
-        <div className="flex justify-between items-start mb-1.5">
-          <Badge variant="secondary" className="font-mono text-[10px]">#{deal.n}</Badge>
-          <div className="flex gap-1">
-            {riskData && riskData.length > 0 && riskData[0].includes("No") === false && (
-              <Badge variant="destructive" className="text-[10px] px-1"><AlertTriangle className="w-3 h-3" /></Badge>
-            )}
-            <Badge variant="outline" className="text-primary text-[10px] px-1">{deal.zn}</Badge>
+    <div {...handlers} className="h-full">
+      <Card className="h-full bg-card border-border hover:border-primary/40 transition-all overflow-hidden group flex flex-col cursor-pointer shadow-sm hover:shadow-md">
+        <CardHeader className="pb-2 pt-3 px-3">
+          <div className="flex justify-between items-start mb-1.5">
+            <Badge variant="secondary" className="font-mono text-[10px]">#{deal.n}</Badge>
+            <div className="flex gap-1">
+              {riskData && riskData.length > 0 && riskData[0].includes("No") === false && (
+                <Badge variant="destructive" className="text-[10px] px-1"><AlertTriangle className="w-3 h-3" /></Badge>
+              )}
+              <Badge variant="outline" className="text-primary text-[10px] px-1">{deal.zn}</Badge>
+            </div>
           </div>
-        </div>
-        <CardTitle className="text-sm font-bold flex items-center gap-1.5 group-hover:text-primary transition-colors" onClick={onOpen}>
-          <MapPin className="w-3.5 h-3.5 text-muted-foreground shrink-0" />
-          <span className="truncate">{deal.ac} Acres • {deal.city}</span>
-        </CardTitle>
-      </CardHeader>
+          <CardTitle className="text-sm font-bold flex items-center gap-1.5 group-hover:text-primary transition-colors" onClick={onOpen}>
+            <MapPin className="w-3.5 h-3.5 text-muted-foreground shrink-0" />
+            <span className="truncate">{deal.ac} Acres • {deal.city}</span>
+          </CardTitle>
+        </CardHeader>
 
-      <CardContent className="pt-0 px-3 pb-3 flex-1 flex flex-col gap-2">
-        {/* Seller row */}
-        <div className="flex items-center justify-between p-2 rounded-lg bg-amber-500/8 border border-amber-500/15" onClick={e => e.stopPropagation()}>
-          <div className="min-w-0 flex-1">
-            <p className="text-[9px] uppercase tracking-wider text-amber-600 dark:text-amber-400 font-bold mb-0.5">Seller</p>
-            <p className="font-medium text-xs truncate">{deal.seller}</p>
-          </div>
-          <Button size="icon" variant="ghost" className="h-6 w-6 text-amber-500 hover:bg-amber-500/20 shrink-0" onClick={() => handleCopy(deal.sph, `sc-${deal.n}`)}>
-            {copiedId === `sc-${deal.n}` ? <CheckCircle2 className="w-3 h-3" /> : <Phone className="w-3 h-3" />}
-          </Button>
-        </div>
-
-        {/* Buyer row */}
-        <div className="flex items-center justify-between p-2 rounded-lg bg-blue-500/8 border border-blue-500/15" onClick={e => e.stopPropagation()}>
-          <div className="min-w-0 flex-1">
-            <p className="text-[9px] uppercase tracking-wider text-blue-600 dark:text-blue-400 font-bold mb-0.5">Target Buyer</p>
-            <p className="font-medium text-xs truncate">{deal.b1n}</p>
-          </div>
-          <Button size="icon" variant="ghost" className="h-6 w-6 text-blue-500 hover:bg-blue-500/20 shrink-0" onClick={() => handleCopy(deal.b1p, `bc-${deal.n}`)}>
-            {copiedId === `bc-${deal.n}` ? <CheckCircle2 className="w-3 h-3" /> : <Phone className="w-3 h-3" />}
-          </Button>
-        </div>
-
-        {/* Footer: profit + actions */}
-        <div className="flex items-center justify-between mt-auto pt-2 border-t border-border">
-          <div>
-            <p className="text-[9px] uppercase tracking-wider text-muted-foreground font-bold mb-0.5">Est. Profit</p>
-            <p className="text-base font-black text-emerald-600 dark:text-emerald-400">
-              {new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD', maximumFractionDigits: 0 }).format(fee)}
-            </p>
-          </div>
-          <div className="flex items-center gap-1.5">
-            {/* Mobile stage mover — shown always, easy tap target */}
-            {moveDeal && currentColumn && (
-              <div className="relative" onClick={e => e.stopPropagation()}>
-                <Button
-                  size="sm"
-                  variant="outline"
-                  className="h-7 text-[10px] px-2 gap-1 font-bold"
-                  onClick={() => setStageOpen(v => !v)}
-                >
-                  <span className={`w-1.5 h-1.5 rounded-full ${COLUMN_COLORS[currentColumn]}`} />
-                  Move
-                  <ChevronDown className="w-3 h-3" />
-                </Button>
-                {stageOpen && (
-                  <div className="absolute bottom-full right-0 mb-1 z-50 bg-card border border-border rounded-xl shadow-xl overflow-hidden min-w-[160px]">
-                    {COLUMNS.filter(c => c !== currentColumn).map(col => (
-                      <button
-                        key={col}
-                        className="w-full text-left px-3 py-2.5 text-xs font-bold hover:bg-accent transition-colors flex items-center gap-2"
-                        onClick={() => { moveDeal(deal, currentColumn, col); setStageOpen(false) }}
-                      >
-                        <span className={`w-2 h-2 rounded-full shrink-0 ${COLUMN_COLORS[col]}`} />
-                        {col}
-                      </button>
-                    ))}
-                  </div>
-                )}
-              </div>
-            )}
-            <Button size="icon" variant="ghost" className="h-7 w-7" onClick={onOpen}>
-              <ChevronRight className="w-4 h-4 text-muted-foreground group-hover:text-primary transition-colors" />
+        <CardContent className="pt-0 px-3 pb-3 flex-1 flex flex-col gap-2">
+          {/* Seller row */}
+          <div className="flex items-center justify-between p-2 rounded-lg bg-amber-500/8 border border-amber-500/15" onClick={e => e.stopPropagation()}>
+            <div className="min-w-0 flex-1">
+              <p className="text-[9px] uppercase tracking-wider text-amber-600 dark:text-amber-400 font-bold mb-0.5">Seller</p>
+              <p className="font-medium text-xs truncate">{deal.seller}</p>
+            </div>
+            <Button size="icon" variant="ghost" className="h-6 w-6 text-amber-500 hover:bg-amber-500/20 shrink-0" onClick={() => handleCopy(deal.sph, `sc-${deal.n}`)}>
+              {copiedId === `sc-${deal.n}` ? <CheckCircle2 className="w-3 h-3" /> : <Phone className="w-3 h-3" />}
             </Button>
           </div>
-        </div>
-      </CardContent>
-    </Card>
+
+          {/* Buyer row */}
+          <div className="flex items-center justify-between p-2 rounded-lg bg-blue-500/8 border border-blue-500/15" onClick={e => e.stopPropagation()}>
+            <div className="min-w-0 flex-1">
+              <p className="text-[9px] uppercase tracking-wider text-blue-600 dark:text-blue-400 font-bold mb-0.5">Target Buyer</p>
+              <p className="font-medium text-xs truncate">{deal.b1n}</p>
+            </div>
+            <Button size="icon" variant="ghost" className="h-6 w-6 text-blue-500 hover:bg-blue-500/20 shrink-0" onClick={() => handleCopy(deal.b1p, `bc-${deal.n}`)}>
+              {copiedId === `bc-${deal.n}` ? <CheckCircle2 className="w-3 h-3" /> : <Phone className="w-3 h-3" />}
+            </Button>
+          </div>
+
+          {/* Footer: profit + actions */}
+          <div className="flex items-center justify-between mt-auto pt-2 border-t border-border">
+            <div>
+              <p className="text-[9px] uppercase tracking-wider text-muted-foreground font-bold mb-0.5">Est. Profit</p>
+              <p className="text-base font-black text-emerald-600 dark:text-emerald-400">
+                {new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD', maximumFractionDigits: 0 }).format(fee)}
+              </p>
+            </div>
+            <div className="flex items-center gap-1.5">
+              {/* Mobile stage mover — shown always, easy tap target */}
+              {moveDeal && currentColumn && (
+                <div className="relative" onClick={e => e.stopPropagation()}>
+                  <Button
+                    size="sm"
+                    variant="outline"
+                    className="h-7 text-[10px] px-2 gap-1 font-bold"
+                    onClick={() => setStageOpen(v => !v)}
+                  >
+                    <span className={`w-1.5 h-1.5 rounded-full ${COLUMN_COLORS[currentColumn]}`} />
+                    Move
+                    <ChevronDown className="w-3 h-3" />
+                  </Button>
+                  {stageOpen && (
+                    <div className="absolute bottom-full right-0 mb-1 z-50 bg-card border border-border rounded-xl shadow-xl overflow-hidden min-w-[160px]">
+                      {COLUMNS.filter(c => c !== currentColumn).map(col => (
+                        <button
+                          key={col}
+                          className="w-full text-left px-3 py-2.5 text-xs font-bold hover:bg-accent transition-colors flex items-center gap-2"
+                          onClick={() => { moveDeal(deal, currentColumn, col); setStageOpen(false) }}
+                        >
+                          <span className={`w-2 h-2 rounded-full shrink-0 ${COLUMN_COLORS[col]}`} />
+                          {col}
+                        </button>
+                      ))}
+                    </div>
+                  )}
+                </div>
+              )}
+              <Button size="icon" variant="ghost" className="h-7 w-7" onClick={onOpen}>
+                <ChevronRight className="w-4 h-4 text-muted-foreground group-hover:text-primary transition-colors" />
+              </Button>
+            </div>
+          </div>
+        </CardContent>
+      </Card>
+    </div>
   )
 }
