@@ -1,0 +1,25 @@
+# Seller Contacts & Deal Math Summary
+Here is the consolidated list of your 15 corporate vacant land targets, their contact info, and the complete deal math.
+
+| Deal # | Seller Name | Phone & Email | Location & Parcel | Acreage & Zoning | Est. Market Value | Max Allowable Offer (Buy Price) | Buyer Pitch Price (Sell Price) | Target Profit (Your Fee) |
+|---|---|---|---|---|---|---|---|---|
+| **#1** | **DUKE REALTY LAND LLC (now Prologis)** | (678) 249-7001 (Kent Mason, GA) | (303) 567-5000 (HQ)<br>*prologis.com/contact-us* | Buford<br>`Check County Map` | 43.52 ac<br>**M1-Light Industry** | $7,502,400 | **$4,126,320** | **$5,251,680** | **<span style='color:green'>$1,125,360</span>** |
+| **#2** | **SCHWANS BAKERY OPERATIONS LLC** | (800) 533-5290 (Corporate) | (888) 554-7421 (Foodservice)<br>*Corporate/SOS Lookup* | Suwanee<br>`Check County Map` | 15.69 ac<br>**M1-Light Industry** | $2,500,000 | **$1,375,000** | **$1,750,000** | **<span style='color:green'>$375,000</span>** |
+| **#3** | **SOUTHEASTERN FREIGHT LINES INC** | (803) 794-7300 (HQ) | (800) 637-7335 (Toll-Free)<br>*Corporate/SOS Lookup* | Suwanee<br>`Check County Map` | 12.09 ac<br>**M1-Light Industry** | $1,689,200 | **$929,060** | **$1,182,440** | **<span style='color:green'>$253,380</span>** |
+| **#4** | **LIDL US OPERATIONS LLC** | (703) 214-3433 (Real Estate Dept)<br>*Corporate/SOS Lookup* | Suwanee<br>`Check County Map` | 7.31 ac<br>**C2-General Business** | $4,407,500 | **$2,424,125** | **$3,085,250** | **<span style='color:green'>$661,125</span>** |
+| **#5** | **CSX TRANSPORTATION INC** | (877) 835-8279 (Real Property) | (904) 359-3200 (HQ)<br>*csx.com/contact* | Dacula<br>`Check County Map` | 10.01 ac<br>**M1-Light Industry** | $500,000 | **$275,000** | **$350,000** | **<span style='color:green'>$75,000</span>** |
+| **#6** | **ROLLINS LEASING CORP (now Penske Truck Leasing)** | (855) 345-7268 (Penske Corporate)<br>*pensketruckleasing.com/contact* | Doraville<br>`Check County Map` | 4.31 ac<br>**M1-Light Industry** | $598,100 | **$328,955** | **$418,670** | **<span style='color:green'>$89,715</span>** |
+| **#7** | **JOSEPH T RYERSON & SONS INC (NYSE: RYI)** | (312) 292-5000 (HQ) | (855) 793-7766 (Customer)<br>*Corporate/SOS Lookup* | Berkeley Lake<br>`Check County Map` | 2.97 ac<br>**R100-Single Family** | $246,300 | **$135,465** | **$172,410** | **<span style='color:green'>$36,945</span>** |
+| **#8** | **COPART OF CONNECTICUT INC (NASDAQ: CPRT)** | (972) 868-4400 (Corporate)<br>*Corporate/SOS Lookup* | Loganville<br>`Check County Map` | 6.66 ac<br>**M1-Light Industry** | $45,700 | **$25,135** | **$31,990** | **<span style='color:green'>$6,855</span>** |
+| **#9** | **STANLEY MARTIN COMPANIES LLC (Daiwa House)** | (703) 621-2050 (Corporate HQ)<br>*Corporate/SOS Lookup* | Lawrenceville<br>`Check County Map` | 6.62 ac<br>**R100-Single Family** | $347,800 | **$191,290** | **$243,460** | **<span style='color:green'>$52,170</span>** |
+| **#10** | **AMERCO REAL ESTATE CO (U-Haul parent)** | (602) 263-6645 (AMERCO Corporate)<br>*amerco.com* | Buford<br>`Check County Map` | 9.73 ac<br>**C2-General Business** | $3,204,200 | **$1,762,310** | **$2,242,940** | **<span style='color:green'>$480,630</span>** |
+| **#11** | **VENTURE REAL ESTATE INVESTMENT GROUP LLC** | (518) 456-3600 (Albany office)<br>*Corporate/SOS Lookup* | Suwanee<br>`Check County Map` | 20.28 ac<br>**M1-Light Industry** | $3,000,000 | **$1,650,000** | **$2,100,000** | **<span style='color:green'>$450,000</span>** |
+| **#12** | **FF PIX 5030 SUGARLOAF LLC (Attn: Jeffrey Theobald)** | GA SOS registered agent lookup required<br>*Corporate/SOS Lookup* | Lawrenceville<br>`Check County Map` | 74.52 ac<br>**M1-Light Industry** | $12,547,500 | **$6,901,125** | **$8,783,250** | **<span style='color:green'>$1,882,125</span>** |
+| **#13** | **NWC #6 LLC** | Mail: PO Box 73399, Puyallup WA 98373<br>*Corporate/SOS Lookup* | Buford<br>`Check County Map` | 8.3 ac<br>**M1-Light Industry** | $1,610,800 | **$885,940** | **$1,127,560** | **<span style='color:green'>$241,620</span>** |
+| **#14** | **MASONRY BRICKS AND DEVELOPMENT CORP** | Mail: 19800 SW 180th Ave Lot 511, Miami FL 33187<br>*Corporate/SOS Lookup* | Norcross<br>`Check County Map` | 7.78 ac<br>**RM-Multi-family** | $157,400 | **$86,570** | **$110,180** | **<span style='color:green'>$23,610</span>** |
+| **#15** | **LEBANON ROAD LAWRENCEVILLE LP** | Mail: 23975 Park Sorrento Ste 220, Calabasas CA 91302<br>*Corporate/SOS Lookup* | Lawrenceville<br>`Check County Map` | 9.43 ac<br>**R100-Single Family** | $1,000 | **$550** | **$700** | **<span style='color:green'>$150</span>** |
+
+### 🔑 Deal Math Breakdown Reminder:
+- **Max Allowable Offer (Buy Price):** This is 55% of the Estimated Market Value. This is the absolute highest you should agree to pay the seller.
+- **Target Profit (Assignment Fee):** This is your 15% cut of the deal for locking it up.
+- **Buyer Pitch Price (Sell Price):** This is the Buy Price + Your Profit. This is the number you pitch to your Institutional Buyer (like Starwood or Prologis). This price still leaves the buyer with a ~30% discount off market value!

@@ -1,0 +1,284 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Seller Contacts & Deal Math Summary</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap');
+  * { margin:0; padding:0; box-sizing:border-box; }
+  body { 
+    font-family: 'Inter', sans-serif; 
+    background: #f4f4f5; 
+    color: #18181b; 
+    padding: 30px; 
+    line-height: 1.5;
+  }
+  .container {
+    max-width: 1200px;
+    margin: 0 auto;
+    background: white;
+    padding: 40px;
+    border-radius: 8px;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+  }
+  h1 { color: #0f172a; margin-bottom: 10px; font-size: 2.2em; }
+  p.subtitle { color: #52525b; font-size: 1.1em; margin-bottom: 30px; }
+  
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 40px;
+  }
+  th, td {
+    padding: 12px 15px;
+    text-align: left;
+    border-bottom: 1px solid #e4e4e7;
+    font-size: 0.95em;
+  }
+  th {
+    background: #0f172a;
+    color: white;
+    font-weight: 600;
+    position: sticky;
+    top: 0;
+  }
+  tbody tr:hover { background-color: #f8fafc; }
+  .text-center { text-align: center; }
+  .font-bold { font-weight: 700; }
+  .text-sm { font-size: 0.85em; }
+  .text-gray { color: #71717a; }
+  .money { text-align: right; font-variant-numeric: tabular-nums; }
+  .offer { color: #b45309; font-weight: 600; }
+  .pitch { color: #0369a1; font-weight: 600; }
+  .profit { color: #059669; font-weight: 700; font-size: 1.1em; }
+  
+  .key-breakdown {
+    background: #f8fafc;
+    border-left: 4px solid #0f172a;
+    padding: 20px;
+    border-radius: 0 8px 8px 0;
+  }
+  .key-breakdown h3 { margin-bottom: 10px; color: #0f172a; }
+  .key-breakdown ul { margin-left: 20px; }
+  .key-breakdown li { margin-bottom: 8px; color: #3f3f46; }
+  
+  @media print {
+    body { background: white; padding: 0; }
+    .container { box-shadow: none; padding: 0; max-width: 100%; }
+  }
+</style>
+</head>
+<body>
+  <div class="container">
+    <h1>Seller Contacts & Deal Math Summary</h1>
+    <p class="subtitle">Consolidated list of your 15 corporate vacant land targets, contact info, and complete deal math.</p>
+    
+    <table>
+      <thead>
+        <tr>
+          <th class="text-center">Deal</th>
+          <th>Seller & Parcel</th>
+          <th>Contact Info</th>
+          <th>Location & Size</th>
+          <th class="money">Est. Market Value</th>
+          <th class="money">Max Allowable Offer<br><span class="text-sm text-gray">(Buy Price)</span></th>
+          <th class="money">Buyer Pitch Price<br><span class="text-sm text-gray">(Sell Price)</span></th>
+          <th class="money">Target Profit<br><span class="text-sm text-gray">(Your Fee)</span></th>
+        </tr>
+      </thead>
+      <tbody>
+        
+    <tr>
+      <td class="text-center font-bold">#1</td>
+      <td><strong>DUKE REALTY LAND LLC (now Prologis)</strong><br><span class="text-sm text-gray">Check County Map</span></td>
+      <td>(678) 249-7001 (Kent Mason, GA) | (303) 567-5000 (HQ)<br><span class="text-sm text-gray">prologis.com/contact-us</span></td>
+      <td>Buford<br><strong>43.52 ac</strong> (M1-Light Industry)</td>
+      <td class="money">$7,502,400</td>
+      <td class="money offer">$4,126,320</td>
+      <td class="money pitch">$5,251,680</td>
+      <td class="money profit">$1,125,360</td>
+    </tr>
+    
+
+    <tr>
+      <td class="text-center font-bold">#2</td>
+      <td><strong>SCHWANS BAKERY OPERATIONS LLC</strong><br><span class="text-sm text-gray">Check County Map</span></td>
+      <td>(800) 533-5290 (Corporate) | (888) 554-7421 (Foodservice)<br><span class="text-sm text-gray">Corporate/SOS Lookup</span></td>
+      <td>Suwanee<br><strong>15.69 ac</strong> (M1-Light Industry)</td>
+      <td class="money">$2,500,000</td>
+      <td class="money offer">$1,375,000</td>
+      <td class="money pitch">$1,750,000</td>
+      <td class="money profit">$375,000</td>
+    </tr>
+    
+
+    <tr>
+      <td class="text-center font-bold">#3</td>
+      <td><strong>SOUTHEASTERN FREIGHT LINES INC</strong><br><span class="text-sm text-gray">Check County Map</span></td>
+      <td>(803) 794-7300 (HQ) | (800) 637-7335 (Toll-Free)<br><span class="text-sm text-gray">Corporate/SOS Lookup</span></td>
+      <td>Suwanee<br><strong>12.09 ac</strong> (M1-Light Industry)</td>
+      <td class="money">$1,689,200</td>
+      <td class="money offer">$929,060</td>
+      <td class="money pitch">$1,182,440</td>
+      <td class="money profit">$253,380</td>
+    </tr>
+    
+
+    <tr>
+      <td class="text-center font-bold">#4</td>
+      <td><strong>LIDL US OPERATIONS LLC</strong><br><span class="text-sm text-gray">Check County Map</span></td>
+      <td>(703) 214-3433 (Real Estate Dept)<br><span class="text-sm text-gray">Corporate/SOS Lookup</span></td>
+      <td>Suwanee<br><strong>7.31 ac</strong> (C2-General Business)</td>
+      <td class="money">$4,407,500</td>
+      <td class="money offer">$2,424,125</td>
+      <td class="money pitch">$3,085,250</td>
+      <td class="money profit">$661,125</td>
+    </tr>
+    
+
+    <tr>
+      <td class="text-center font-bold">#5</td>
+      <td><strong>CSX TRANSPORTATION INC</strong><br><span class="text-sm text-gray">Check County Map</span></td>
+      <td>(877) 835-8279 (Real Property) | (904) 359-3200 (HQ)<br><span class="text-sm text-gray">csx.com/contact</span></td>
+      <td>Dacula<br><strong>10.01 ac</strong> (M1-Light Industry)</td>
+      <td class="money">$500,000</td>
+      <td class="money offer">$275,000</td>
+      <td class="money pitch">$350,000</td>
+      <td class="money profit">$75,000</td>
+    </tr>
+    
+
+    <tr>
+      <td class="text-center font-bold">#6</td>
+      <td><strong>ROLLINS LEASING CORP (now Penske Truck Leasing)</strong><br><span class="text-sm text-gray">Check County Map</span></td>
+      <td>(855) 345-7268 (Penske Corporate)<br><span class="text-sm text-gray">pensketruckleasing.com/contact</span></td>
+      <td>Doraville<br><strong>4.31 ac</strong> (M1-Light Industry)</td>
+      <td class="money">$598,100</td>
+      <td class="money offer">$328,955</td>
+      <td class="money pitch">$418,670</td>
+      <td class="money profit">$89,715</td>
+    </tr>
+    
+
+    <tr>
+      <td class="text-center font-bold">#7</td>
+      <td><strong>JOSEPH T RYERSON & SONS INC (NYSE: RYI)</strong><br><span class="text-sm text-gray">Check County Map</span></td>
+      <td>(312) 292-5000 (HQ) | (855) 793-7766 (Customer)<br><span class="text-sm text-gray">Corporate/SOS Lookup</span></td>
+      <td>Berkeley Lake<br><strong>2.97 ac</strong> (R100-Single Family)</td>
+      <td class="money">$246,300</td>
+      <td class="money offer">$135,465</td>
+      <td class="money pitch">$172,410</td>
+      <td class="money profit">$36,945</td>
+    </tr>
+    
+
+    <tr>
+      <td class="text-center font-bold">#8</td>
+      <td><strong>COPART OF CONNECTICUT INC (NASDAQ: CPRT)</strong><br><span class="text-sm text-gray">Check County Map</span></td>
+      <td>(972) 868-4400 (Corporate)<br><span class="text-sm text-gray">Corporate/SOS Lookup</span></td>
+      <td>Loganville<br><strong>6.66 ac</strong> (M1-Light Industry)</td>
+      <td class="money">$45,700</td>
+      <td class="money offer">$25,135</td>
+      <td class="money pitch">$31,990</td>
+      <td class="money profit">$6,855</td>
+    </tr>
+    
+
+    <tr>
+      <td class="text-center font-bold">#9</td>
+      <td><strong>STANLEY MARTIN COMPANIES LLC (Daiwa House)</strong><br><span class="text-sm text-gray">Check County Map</span></td>
+      <td>(703) 621-2050 (Corporate HQ)<br><span class="text-sm text-gray">Corporate/SOS Lookup</span></td>
+      <td>Lawrenceville<br><strong>6.62 ac</strong> (R100-Single Family)</td>
+      <td class="money">$347,800</td>
+      <td class="money offer">$191,290</td>
+      <td class="money pitch">$243,460</td>
+      <td class="money profit">$52,170</td>
+    </tr>
+    
+
+    <tr>
+      <td class="text-center font-bold">#10</td>
+      <td><strong>AMERCO REAL ESTATE CO (U-Haul parent)</strong><br><span class="text-sm text-gray">Check County Map</span></td>
+      <td>(602) 263-6645 (AMERCO Corporate)<br><span class="text-sm text-gray">amerco.com</span></td>
+      <td>Buford<br><strong>9.73 ac</strong> (C2-General Business)</td>
+      <td class="money">$3,204,200</td>
+      <td class="money offer">$1,762,310</td>
+      <td class="money pitch">$2,242,940</td>
+      <td class="money profit">$480,630</td>
+    </tr>
+    
+
+    <tr>
+      <td class="text-center font-bold">#11</td>
+      <td><strong>VENTURE REAL ESTATE INVESTMENT GROUP LLC</strong><br><span class="text-sm text-gray">Check County Map</span></td>
+      <td>(518) 456-3600 (Albany office)<br><span class="text-sm text-gray">Corporate/SOS Lookup</span></td>
+      <td>Suwanee<br><strong>20.28 ac</strong> (M1-Light Industry)</td>
+      <td class="money">$3,000,000</td>
+      <td class="money offer">$1,650,000</td>
+      <td class="money pitch">$2,100,000</td>
+      <td class="money profit">$450,000</td>
+    </tr>
+    
+
+    <tr>
+      <td class="text-center font-bold">#12</td>
+      <td><strong>FF PIX 5030 SUGARLOAF LLC (Attn: Jeffrey Theobald)</strong><br><span class="text-sm text-gray">Check County Map</span></td>
+      <td>GA SOS registered agent lookup required<br><span class="text-sm text-gray">Corporate/SOS Lookup</span></td>
+      <td>Lawrenceville<br><strong>74.52 ac</strong> (M1-Light Industry)</td>
+      <td class="money">$12,547,500</td>
+      <td class="money offer">$6,901,125</td>
+      <td class="money pitch">$8,783,250</td>
+      <td class="money profit">$1,882,125</td>
+    </tr>
+    
+
+    <tr>
+      <td class="text-center font-bold">#13</td>
+      <td><strong>NWC #6 LLC</strong><br><span class="text-sm text-gray">Check County Map</span></td>
+      <td>Mail: PO Box 73399, Puyallup WA 98373<br><span class="text-sm text-gray">Corporate/SOS Lookup</span></td>
+      <td>Buford<br><strong>8.3 ac</strong> (M1-Light Industry)</td>
+      <td class="money">$1,610,800</td>
+      <td class="money offer">$885,940</td>
+      <td class="money pitch">$1,127,560</td>
+      <td class="money profit">$241,620</td>
+    </tr>
+    
+
+    <tr>
+      <td class="text-center font-bold">#14</td>
+      <td><strong>MASONRY BRICKS AND DEVELOPMENT CORP</strong><br><span class="text-sm text-gray">Check County Map</span></td>
+      <td>Mail: 19800 SW 180th Ave Lot 511, Miami FL 33187<br><span class="text-sm text-gray">Corporate/SOS Lookup</span></td>
+      <td>Norcross<br><strong>7.78 ac</strong> (RM-Multi-family)</td>
+      <td class="money">$157,400</td>
+      <td class="money offer">$86,570</td>
+      <td class="money pitch">$110,180</td>
+      <td class="money profit">$23,610</td>
+    </tr>
+    
+
+    <tr>
+      <td class="text-center font-bold">#15</td>
+      <td><strong>LEBANON ROAD LAWRENCEVILLE LP</strong><br><span class="text-sm text-gray">Check County Map</span></td>
+      <td>Mail: 23975 Park Sorrento Ste 220, Calabasas CA 91302<br><span class="text-sm text-gray">Corporate/SOS Lookup</span></td>
+      <td>Lawrenceville<br><strong>9.43 ac</strong> (R100-Single Family)</td>
+      <td class="money">$1,000</td>
+      <td class="money offer">$550</td>
+      <td class="money pitch">$700</td>
+      <td class="money profit">$150</td>
+    </tr>
+    
+      </tbody>
+    </table>
+
+    <div class="key-breakdown">
+      <h3>🔑 Deal Math Breakdown</h3>
+      <ul>
+        <li><strong>Max Allowable Offer (Buy Price):</strong> 55% of Est. Market Value. The absolute highest you should pay.</li>
+        <li><strong>Target Profit (Assignment Fee):</strong> Your 15% cut of the deal for locking it up.</li>
+        <li><strong>Buyer Pitch Price (Sell Price):</strong> Buy Price + Your Profit. Leaves the buyer with a ~30% discount off market value.</li>
+      </ul>
+    </div>
+  </div>
+</body>
+</html>

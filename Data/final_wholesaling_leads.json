@@ -1,0 +1,122 @@
+[
+  {
+    "PIN": "235121101090",
+    "OWNER": null,
+    "ACREAGE": null,
+    "IN_FLOOD_ZONE": false
+  },
+  {
+    "PIN": "250708301076",
+    "OWNER": null,
+    "ACREAGE": null,
+    "IN_FLOOD_ZONE": false
+  },
+  {
+    "PIN": "250707102010",
+    "OWNER": null,
+    "ACREAGE": null,
+    "IN_FLOOD_ZONE": false
+  },
+  {
+    "PIN": "235104104059",
+    "OWNER": null,
+    "ACREAGE": null,
+    "IN_FLOOD_ZONE": false
+  },
+  {
+    "PIN": "235133210023",
+    "OWNER": null,
+    "ACREAGE": null,
+    "IN_FLOOD_ZONE": false
+  },
+  {
+    "PIN": "234910312031",
+    "OWNER": "PINERY MEADOWS METRO DISTRICT 2",
+    "ACREAGE": 0.417,
+    "IN_FLOOD_ZONE": false
+  },
+  {
+    "PIN": "234910312032",
+    "OWNER": "PINERY MEADOWS METRO DISTRICT 2",
+    "ACREAGE": 0.041,
+    "IN_FLOOD_ZONE": false
+  },
+  {
+    "PIN": "234910498003",
+    "OWNER": "JEN COLORADO 23 LLC",
+    "ACREAGE": 0.287,
+    "IN_FLOOD_ZONE": false
+  },
+  {
+    "PIN": "234910409049",
+    "OWNER": "JEN COLORADO 23 LLC",
+    "ACREAGE": 0.021,
+    "IN_FLOOD_ZONE": false
+  },
+  {
+    "PIN": "234910498002",
+    "OWNER": "JEN COLORADO 23 LLC",
+    "ACREAGE": 0.327,
+    "IN_FLOOD_ZONE": false
+  },
+  {
+    "PIN": "234910498004",
+    "OWNER": "JEN COLORADO 23 LLC",
+    "ACREAGE": 0.039,
+    "IN_FLOOD_ZONE": false
+  },
+  {
+    "PIN": "235102199002",
+    "OWNER": "CITY OF CASTLE PINES",
+    "ACREAGE": 5.437,
+    "IN_FLOOD_ZONE": false
+  },
+  {
+    "PIN": "235102108045",
+    "OWNER": "RICHMOND AMERICAN HOMES OF COLORADO INC",
+    "ACREAGE": 0.205,
+    "IN_FLOOD_ZONE": false
+  },
+  {
+    "PIN": "235102108044",
+    "OWNER": "RICHMOND AMERICAN HOMES OF COLORADO INC",
+    "ACREAGE": 0.175,
+    "IN_FLOOD_ZONE": false
+  },
+  {
+    "PIN": "234910409001",
+    "OWNER": "PINERY MEADOWS METRO DISTRICT 2",
+    "ACREAGE": 0.177,
+    "IN_FLOOD_ZONE": false
+  },
+  {
+    "PIN": "234910409017",
+    "OWNER": "PINERY MEADOWS METRO DISTRICT 2",
+    "ACREAGE": 2.971,
+    "IN_FLOOD_ZONE": false
+  },
+  {
+    "PIN": "234910499013",
+    "OWNER": "DOUGLAS COUNTY BOARD OF COUNTY COMMISSIONERS",
+    "ACREAGE": 4.578,
+    "IN_FLOOD_ZONE": false
+  },
+  {
+    "PIN": "234910312027",
+    "OWNER": "PINERY MEADOWS METRO DISTRICT 2",
+    "ACREAGE": 18.648,
+    "IN_FLOOD_ZONE": false
+  },
+  {
+    "PIN": "234910410035",
+    "OWNER": "PINERY MEADOWS METRO DISTRICT 2",
+    "ACREAGE": 0.044,
+    "IN_FLOOD_ZONE": false
+  },
+  {
+    "PIN": "234910412017",
+    "OWNER": "PINERY MEADOWS METRO DISTRICT 2",
+    "ACREAGE": 0.741,
+    "IN_FLOOD_ZONE": false
+  }
+]
