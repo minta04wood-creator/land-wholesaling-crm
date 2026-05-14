@@ -1,6 +1,6 @@
-import React, { useState, useEffect, useMemo } from 'react'
+import React, { useState, useEffect } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
-import { Search, MapPin, Building2, User, Phone, DollarSign, LayoutDashboard, Copy, CheckCircle2, ChevronRight, Filter, ExternalLink, FileText, Globe, AlertTriangle, Columns, LayoutGrid, Menu, X } from 'lucide-react'
+import { Search, MapPin, Building2, Phone, DollarSign, LayoutDashboard, CheckCircle2, ChevronRight, FileText, Globe, AlertTriangle, Columns, LayoutGrid, Menu, X, Sun, Moon, ChevronDown } from 'lucide-react'
 import { DragDropContext, Droppable, Draggable, DropResult } from '@hello-pangea/dnd'
 import { MapContainer, TileLayer, Marker, Popup } from 'react-leaflet'
 import 'leaflet/dist/leaflet.css'
@@ -14,16 +14,23 @@ let DefaultIcon = L.icon({ iconUrl, shadowUrl: iconShadow, iconAnchor: [12, 41] 
 L.Marker.prototype.options.icon = DefaultIcon
 
 import { deals } from './data'
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
 import { Input } from '@/components/ui/input'
-import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from '@/components/ui/dialog'
+import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/components/ui/accordion'
 import { ScrollArea } from '@/components/ui/scroll-area'
 import { Button } from '@/components/ui/button'
 
 const COLUMNS = ['New Lead', 'Contacted', 'Negotiating', 'Under Contract', 'Closed']
+const COLUMN_COLORS: Record<string, string> = {
+  'New Lead': 'bg-blue-500',
+  'Contacted': 'bg-amber-500',
+  'Negotiating': 'bg-purple-500',
+  'Under Contract': 'bg-orange-500',
+  'Closed': 'bg-emerald-500',
+}
 
 export default function App() {
   const [search, setSearch] = useState('')
@@ -32,21 +39,20 @@ export default function App() {
   const [filterMode, setFilterMode] = useState<'all' | 'vacant' | 'institutional'>('all')
   const [viewMode, setViewMode] = useState<'grid' | 'kanban'>('kanban')
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
+  const [theme, setTheme] = useState<'dark' | 'light'>(() =>
+    (localStorage.getItem('crm-theme') as 'dark' | 'light') || 'dark'
+  )
+
+  useEffect(() => {
+    localStorage.setItem('crm-theme', theme)
+    document.documentElement.classList.toggle('dark', theme === 'dark')
+  }, [theme])
 
   // Pipeline State
   const [pipeline, setPipeline] = useState<Record<string, any[]>>(() => {
     const saved = localStorage.getItem('land-pipeline')
     if (saved) return JSON.parse(saved)
-    
-    // Initialize pipeline from data.ts
-    const initial: Record<string, any[]> = {
-      'New Lead': deals,
-      'Contacted': [],
-      'Negotiating': [],
-      'Under Contract': [],
-      'Closed': []
-    }
-    return initial
+    return { 'New Lead': deals, 'Contacted': [], 'Negotiating': [], 'Under Contract': [], 'Closed': [] }
   })
 
   // Mocked Server States
@@ -59,6 +65,7 @@ export default function App() {
     localStorage.setItem('land-pipeline', JSON.stringify(pipeline))
   }, [pipeline])
 
+
   const handleCopy = (text: string, id: string) => {
     navigator.clipboard.writeText(text)
     setCopiedId(id)
@@ -70,13 +77,10 @@ export default function App() {
   const onDragEnd = (result: DropResult) => {
     const { source, destination } = result;
     if (!destination) return;
-
     if (source.droppableId === destination.droppableId && source.index === destination.index) return;
-
     const sourceList = Array.from(pipeline[source.droppableId]);
     const destList = source.droppableId === destination.droppableId ? sourceList : Array.from(pipeline[destination.droppableId]);
     const [moved] = sourceList.splice(source.index, 1);
-
     if (source.droppableId === destination.droppableId) {
       sourceList.splice(destination.index, 0, moved);
       setPipeline({ ...pipeline, [source.droppableId]: sourceList });
@@ -85,6 +89,24 @@ export default function App() {
       setPipeline({ ...pipeline, [source.droppableId]: sourceList, [destination.droppableId]: destList });
     }
   }
+
+  // Mobile-friendly: move deal to a different stage without dragging
+  const moveDeal = (deal: any, fromColumn: string, toColumn: string) => {
+    if (fromColumn === toColumn) return
+    const sourceList = pipeline[fromColumn].filter((d: any) => d.n !== deal.n)
+    const destList = [...pipeline[toColumn], deal]
+    setPipeline({ ...pipeline, [fromColumn]: sourceList, [toColumn]: destList })
+  }
+
+  // Find which column a deal is currently in
+  const getDealColumn = (deal: any): string => {
+    for (const col of COLUMNS) {
+      if (pipeline[col]?.find((d: any) => d.n === deal.n)) return col
+    }
+    return 'New Lead'
+  }
+
+
 
   const generatePSA = (deal: any) => {
     const doc = new jsPDF()
@@ -270,6 +292,10 @@ export default function App() {
               <LayoutGrid className="w-4 h-4" /><span className="hidden md:inline ml-2">Grid</span>
             </Button>
           </div>
+          {/* Theme toggle */}
+          <Button variant="ghost" size="icon" className="shrink-0" onClick={() => setTheme(t => t === 'dark' ? 'light' : 'dark')}>
+            {theme === 'dark' ? <Sun className="w-4 h-4" /> : <Moon className="w-4 h-4" />}
+          </Button>
         </header>
 
         {/* Content Area */}
@@ -280,8 +306,11 @@ export default function App() {
                 {COLUMNS.map(columnId => (
                   <div key={columnId} className="flex flex-col w-[350px] shrink-0 h-full">
                     <div className="flex items-center justify-between mb-4 px-2">
-                      <h3 className="font-bold text-lg text-white/90">{columnId}</h3>
-                      <Badge className="bg-primary/20 text-primary">{pipeline[columnId].length}</Badge>
+                      <div className="flex items-center gap-2">
+                        <span className={`w-2.5 h-2.5 rounded-full ${COLUMN_COLORS[columnId]}`} />
+                        <h3 className="font-bold text-lg">{columnId}</h3>
+                      </div>
+                      <Badge variant="secondary" className="font-bold">{pipeline[columnId].length}</Badge>
                     </div>
                     <Droppable droppableId={columnId}>
                       {(provided, snapshot) => (
@@ -300,7 +329,7 @@ export default function App() {
                                   className={`mb-4 ${snapshot.isDragging ? 'rotate-2 scale-105' : ''}`}
                                   onClick={() => setSelectedDeal(deal)}
                                 >
-                                  <DealCard deal={deal} handleCopy={handleCopy} copiedId={copiedId} riskData={riskData[deal.n]} />
+                                  <DealCard deal={deal} handleCopy={handleCopy} copiedId={copiedId} riskData={riskData[deal.n]} currentColumn={columnId} moveDeal={moveDeal} onOpen={() => setSelectedDeal(deal)} />
                                 </div>
                               )}
                             </Draggable>
@@ -393,7 +422,7 @@ export default function App() {
                         {/* Buyer */}
                         <div className="flex items-center justify-between bg-blue-500/10 border border-blue-500/20 p-6 rounded-2xl mt-12">
                           <div>
-                            <h3 className="text-xl font-bold text-blue-400 flex items-center gap-2 mb-2"><User className="w-5 h-5" /> {selectedDeal.b1n}</h3>
+                            <h3 className="text-xl font-bold text-blue-400 flex items-center gap-2 mb-2"><Building2 className="w-5 h-5" /> {selectedDeal.b1n}</h3>
                             <div className="flex items-center gap-6 text-blue-400/80">
                               <span className="flex items-center gap-2"><Phone className="w-4 h-4" /> {selectedDeal.b1p}</span>
                             </div>
@@ -559,52 +588,94 @@ export default function App() {
   )
 }
 
-function DealCard({ deal, handleCopy, copiedId, riskData }: any) {
-  const fee = deal.lv * 0.15;
+
+function DealCard({ deal, handleCopy, copiedId, riskData, currentColumn, moveDeal, onOpen }: any) {
+  const [stageOpen, setStageOpen] = useState(false)
+  const fee = deal.lv * 0.15
+
   return (
-    <Card className="premium-glow h-full bg-card/60 backdrop-blur-sm border-white/5 hover:border-primary/30 transition-all overflow-hidden group flex flex-col cursor-pointer shadow-lg hover:shadow-primary/5">
-      <CardHeader className="bg-gradient-to-b from-white/5 to-transparent pb-3">
-        <div className="flex justify-between items-start mb-2">
-          <Badge variant="secondary" className="font-mono bg-white/10 text-white text-[10px]">#{deal.n}</Badge>
+    <Card className="h-full bg-card border-border hover:border-primary/40 transition-all overflow-hidden group flex flex-col cursor-pointer shadow-sm hover:shadow-md">
+      <CardHeader className="pb-2 pt-3 px-3">
+        <div className="flex justify-between items-start mb-1.5">
+          <Badge variant="secondary" className="font-mono text-[10px]">#{deal.n}</Badge>
           <div className="flex gap-1">
             {riskData && riskData.length > 0 && riskData[0].includes("No") === false && (
-              <Badge className="bg-destructive/20 text-destructive-foreground border-none text-[10px] px-1"><AlertTriangle className="w-3 h-3" /></Badge>
+              <Badge variant="destructive" className="text-[10px] px-1"><AlertTriangle className="w-3 h-3" /></Badge>
             )}
-            <Badge variant="outline" className="border-primary/50 text-primary bg-primary/10 text-[10px] px-1">{deal.zn}</Badge>
+            <Badge variant="outline" className="text-primary text-[10px] px-1">{deal.zn}</Badge>
           </div>
         </div>
-        <CardTitle className="text-base font-bold flex items-center gap-2 group-hover:text-primary transition-colors">
-          <MapPin className="w-4 h-4 text-muted-foreground shrink-0 group-hover:text-primary" />
+        <CardTitle className="text-sm font-bold flex items-center gap-1.5 group-hover:text-primary transition-colors" onClick={onOpen}>
+          <MapPin className="w-3.5 h-3.5 text-muted-foreground shrink-0" />
           <span className="truncate">{deal.ac} Acres • {deal.city}</span>
         </CardTitle>
       </CardHeader>
-      <CardContent className="pt-2 flex-1 flex flex-col gap-3">
-        <div className="space-y-2 flex-1">
-          <div className="flex items-center justify-between p-2 rounded bg-amber-500/5 border border-amber-500/10" onClick={(e) => e.stopPropagation()}>
-            <div className="min-w-0 flex-1">
-              <p className="text-[9px] uppercase tracking-wider text-amber-500/80 font-bold mb-0.5">Seller</p>
-              <p className="font-medium text-xs truncate pr-1 text-white/90">{deal.seller}</p>
-            </div>
-            <Button size="icon" variant="ghost" className="h-6 w-6 text-amber-500 hover:bg-amber-500/20" onClick={() => handleCopy(deal.sph, `sc-${deal.n}`)}>
-              {copiedId === `sc-${deal.n}` ? <CheckCircle2 className="w-3 h-3" /> : <Phone className="w-3 h-3" />}
-            </Button>
+
+      <CardContent className="pt-0 px-3 pb-3 flex-1 flex flex-col gap-2">
+        {/* Seller row */}
+        <div className="flex items-center justify-between p-2 rounded-lg bg-amber-500/8 border border-amber-500/15" onClick={e => e.stopPropagation()}>
+          <div className="min-w-0 flex-1">
+            <p className="text-[9px] uppercase tracking-wider text-amber-600 dark:text-amber-400 font-bold mb-0.5">Seller</p>
+            <p className="font-medium text-xs truncate">{deal.seller}</p>
           </div>
-          <div className="flex items-center justify-between p-2 rounded bg-blue-500/5 border border-blue-500/10" onClick={(e) => e.stopPropagation()}>
-            <div className="min-w-0 flex-1">
-              <p className="text-[9px] uppercase tracking-wider text-blue-400/80 font-bold mb-0.5">Target Buyer</p>
-              <p className="font-medium text-xs truncate pr-1 text-white/90">{deal.b1n}</p>
-            </div>
-            <Button size="icon" variant="ghost" className="h-6 w-6 text-blue-400 hover:bg-blue-500/20" onClick={() => handleCopy(deal.b1p, `bc-${deal.n}`)}>
-              {copiedId === `bc-${deal.n}` ? <CheckCircle2 className="w-3 h-3" /> : <Phone className="w-3 h-3" />}
-            </Button>
-          </div>
+          <Button size="icon" variant="ghost" className="h-6 w-6 text-amber-500 hover:bg-amber-500/20 shrink-0" onClick={() => handleCopy(deal.sph, `sc-${deal.n}`)}>
+            {copiedId === `sc-${deal.n}` ? <CheckCircle2 className="w-3 h-3" /> : <Phone className="w-3 h-3" />}
+          </Button>
         </div>
-        <div className="flex items-end justify-between mt-1 pt-2 border-t border-white/5">
+
+        {/* Buyer row */}
+        <div className="flex items-center justify-between p-2 rounded-lg bg-blue-500/8 border border-blue-500/15" onClick={e => e.stopPropagation()}>
+          <div className="min-w-0 flex-1">
+            <p className="text-[9px] uppercase tracking-wider text-blue-600 dark:text-blue-400 font-bold mb-0.5">Target Buyer</p>
+            <p className="font-medium text-xs truncate">{deal.b1n}</p>
+          </div>
+          <Button size="icon" variant="ghost" className="h-6 w-6 text-blue-500 hover:bg-blue-500/20 shrink-0" onClick={() => handleCopy(deal.b1p, `bc-${deal.n}`)}>
+            {copiedId === `bc-${deal.n}` ? <CheckCircle2 className="w-3 h-3" /> : <Phone className="w-3 h-3" />}
+          </Button>
+        </div>
+
+        {/* Footer: profit + actions */}
+        <div className="flex items-center justify-between mt-auto pt-2 border-t border-border">
           <div>
             <p className="text-[9px] uppercase tracking-wider text-muted-foreground font-bold mb-0.5">Est. Profit</p>
-            <p className="text-lg font-black text-emerald-400">{new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD', maximumFractionDigits: 0 }).format(fee)}</p>
+            <p className="text-base font-black text-emerald-600 dark:text-emerald-400">
+              {new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD', maximumFractionDigits: 0 }).format(fee)}
+            </p>
           </div>
-          <ChevronRight className="w-4 h-4 text-muted-foreground group-hover:text-primary transition-colors" />
+          <div className="flex items-center gap-1.5">
+            {/* Mobile stage mover — shown always, easy tap target */}
+            {moveDeal && currentColumn && (
+              <div className="relative" onClick={e => e.stopPropagation()}>
+                <Button
+                  size="sm"
+                  variant="outline"
+                  className="h-7 text-[10px] px-2 gap-1 font-bold"
+                  onClick={() => setStageOpen(v => !v)}
+                >
+                  <span className={`w-1.5 h-1.5 rounded-full ${COLUMN_COLORS[currentColumn]}`} />
+                  Move
+                  <ChevronDown className="w-3 h-3" />
+                </Button>
+                {stageOpen && (
+                  <div className="absolute bottom-full right-0 mb-1 z-50 bg-card border border-border rounded-xl shadow-xl overflow-hidden min-w-[160px]">
+                    {COLUMNS.filter(c => c !== currentColumn).map(col => (
+                      <button
+                        key={col}
+                        className="w-full text-left px-3 py-2.5 text-xs font-bold hover:bg-accent transition-colors flex items-center gap-2"
+                        onClick={() => { moveDeal(deal, currentColumn, col); setStageOpen(false) }}
+                      >
+                        <span className={`w-2 h-2 rounded-full shrink-0 ${COLUMN_COLORS[col]}`} />
+                        {col}
+                      </button>
+                    ))}
+                  </div>
+                )}
+              </div>
+            )}
+            <Button size="icon" variant="ghost" className="h-7 w-7" onClick={onOpen}>
+              <ChevronRight className="w-4 h-4 text-muted-foreground group-hover:text-primary transition-colors" />
+            </Button>
+          </div>
         </div>
       </CardContent>
     </Card>

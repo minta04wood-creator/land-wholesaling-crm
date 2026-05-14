@@ -3,7 +3,8 @@
 @tailwind utilities;
 
 @layer base {
-  :root {
+  /* Dark mode (default) */
+  :root, .dark {
     --background: 230 25% 6%;
     --foreground: 210 40% 98%;
     --card: 230 25% 8%;
@@ -18,31 +19,59 @@
     --muted-foreground: 215.4 16.3% 56.9%;
     --accent: 230 20% 16%;
     --accent-foreground: 210 40% 98%;
-    --destructive: 0 63% 31%;
+    --destructive: 0 63% 50%;
     --destructive-foreground: 210 40% 98%;
     --border: 230 20% 15%;
     --input: 230 20% 15%;
     --ring: 250 100% 75%;
     --radius: 0.75rem;
   }
+
+  /* Light mode */
+  .light {
+    --background: 220 20% 97%;
+    --foreground: 222 47% 11%;
+    --card: 0 0% 100%;
+    --card-foreground: 222 47% 11%;
+    --popover: 0 0% 100%;
+    --popover-foreground: 222 47% 11%;
+    --primary: 250 80% 55%;
+    --primary-foreground: 0 0% 100%;
+    --secondary: 220 14% 93%;
+    --secondary-foreground: 222 47% 11%;
+    --muted: 220 14% 93%;
+    --muted-foreground: 215 16% 45%;
+    --accent: 220 14% 90%;
+    --accent-foreground: 222 47% 11%;
+    --destructive: 0 72% 51%;
+    --destructive-foreground: 0 0% 100%;
+    --border: 220 13% 88%;
+    --input: 220 13% 88%;
+    --ring: 250 80% 55%;
+    --radius: 0.75rem;
+  }
 }
- 
+
 @layer base {
   * {
     @apply border-border;
   }
   body {
-    @apply bg-background text-foreground bg-[radial-gradient(ellipse_80%_80%_at_50%_-20%,rgba(120,119,198,0.15),rgba(255,255,255,0))];
+    @apply bg-background text-foreground;
     min-height: 100vh;
+  }
+  .dark body {
+    background-image: radial-gradient(ellipse 80% 80% at 50% -20%, rgba(120,119,198,0.15), rgba(255,255,255,0));
   }
 }
 
 @layer utilities {
   .glass-panel {
-    @apply bg-background/40 backdrop-blur-xl border border-white/[0.05] shadow-[0_8px_32px_0_rgba(0,0,0,0.3)];
+    @apply bg-background/80 backdrop-blur-xl border border-border shadow-sm;
   }
-  .premium-glow {
-    @apply relative before:absolute before:inset-0 before:bg-gradient-to-r before:from-primary/50 before:to-emerald-500/50 before:blur-xl before:opacity-0 hover:before:opacity-100 before:transition-opacity before:duration-500 before:-z-10;
+  .dark .glass-panel {
+    background-color: hsl(var(--background) / 0.4);
+    box-shadow: 0 8px 32px 0 rgba(0,0,0,0.3);
   }
   .text-gradient {
     @apply bg-clip-text text-transparent bg-gradient-to-r from-primary via-indigo-400 to-emerald-400;
