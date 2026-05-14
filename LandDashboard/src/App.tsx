@@ -189,6 +189,7 @@ export default function App() {
   const mapCenter: [number, number] = [33.9526, -84.0077] 
 
   return (
+    <>
     <div className="flex h-[100dvh] bg-background text-foreground dark overflow-hidden">
 
       {/* Desktop Sidebar */}
@@ -535,25 +536,26 @@ export default function App() {
       </Dialog>
     </div>
 
-      {/* Mobile Bottom Nav */}
-      <nav className="md:hidden fixed bottom-0 left-0 right-0 z-40 glass-panel border-t border-white/10 flex items-center justify-around px-2 pb-[env(safe-area-inset-bottom)] h-16">
-        <button onClick={() => setFilterMode('all')} className={`flex flex-col items-center gap-1 px-4 py-2 rounded-xl transition-colors ${filterMode === 'all' ? 'text-primary' : 'text-muted-foreground'}`}>
-          <LayoutDashboard className="w-5 h-5" />
-          <span className="text-[10px] font-bold uppercase tracking-wider">All</span>
-        </button>
-        <button onClick={() => setFilterMode('vacant')} className={`flex flex-col items-center gap-1 px-4 py-2 rounded-xl transition-colors ${filterMode === 'vacant' ? 'text-primary' : 'text-muted-foreground'}`}>
-          <MapPin className="w-5 h-5" />
-          <span className="text-[10px] font-bold uppercase tracking-wider">Vacant</span>
-        </button>
-        <button onClick={() => setFilterMode('institutional')} className={`flex flex-col items-center gap-1 px-4 py-2 rounded-xl transition-colors ${filterMode === 'institutional' ? 'text-primary' : 'text-muted-foreground'}`}>
-          <Building2 className="w-5 h-5" />
-          <span className="text-[10px] font-bold uppercase tracking-wider">Institutional</span>
-        </button>
-        <button onClick={() => setMobileMenuOpen(v => !v)} className={`flex flex-col items-center gap-1 px-4 py-2 rounded-xl transition-colors ${mobileMenuOpen ? 'text-primary' : 'text-muted-foreground'}`}>
-          <DollarSign className="w-5 h-5" />
-          <span className="text-[10px] font-bold uppercase tracking-wider">Value</span>
-        </button>
-      </nav>
+    {/* Mobile Bottom Nav */}
+    <nav className="md:hidden fixed bottom-0 left-0 right-0 z-40 glass-panel border-t border-white/10 flex items-center justify-around px-2 pb-[env(safe-area-inset-bottom)] h-16">
+      <button onClick={() => setFilterMode('all')} className={`flex flex-col items-center gap-1 px-4 py-2 rounded-xl transition-colors ${filterMode === 'all' ? 'text-primary' : 'text-muted-foreground'}`}>
+        <LayoutDashboard className="w-5 h-5" />
+        <span className="text-[10px] font-bold uppercase tracking-wider">All</span>
+      </button>
+      <button onClick={() => setFilterMode('vacant')} className={`flex flex-col items-center gap-1 px-4 py-2 rounded-xl transition-colors ${filterMode === 'vacant' ? 'text-primary' : 'text-muted-foreground'}`}>
+        <MapPin className="w-5 h-5" />
+        <span className="text-[10px] font-bold uppercase tracking-wider">Vacant</span>
+      </button>
+      <button onClick={() => setFilterMode('institutional')} className={`flex flex-col items-center gap-1 px-4 py-2 rounded-xl transition-colors ${filterMode === 'institutional' ? 'text-primary' : 'text-muted-foreground'}`}>
+        <Building2 className="w-5 h-5" />
+        <span className="text-[10px] font-bold uppercase tracking-wider">Institutional</span>
+      </button>
+      <button onClick={() => setMobileMenuOpen(v => !v)} className={`flex flex-col items-center gap-1 px-4 py-2 rounded-xl transition-colors ${mobileMenuOpen ? 'text-primary' : 'text-muted-foreground'}`}>
+        <DollarSign className="w-5 h-5" />
+        <span className="text-[10px] font-bold uppercase tracking-wider">Value</span>
+      </button>
+    </nav>
+    </>
   )
 }
 
