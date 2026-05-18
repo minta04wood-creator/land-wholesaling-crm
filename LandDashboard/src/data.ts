@@ -1583,14 +1583,14 @@ export const deals = [
     "held": "Corporate Listing",
     "paid": "N/A",
     "liens": "None",
-    "b1n": "Cortland Partners",
-    "b1p": "(404) 965-3988",
-    "b1e": "info@cortland.com",
-    "b2n": "Toll Brothers — Land Acquisition",
-    "b2p": "(404) 474-4814",
-    "b2e": "landacquisitions@tollbrothers.com",
+    "b1n": "Brand Properties",
+    "b1p": "(770) 963-9223",
+    "b1e": "info@brandproperties.com",
+    "b2n": "Wood Partners",
+    "b2p": "(404) 965-9965",
+    "b2e": "acquisitions@woodpartners.com",
     "ss": "Hi Arthur, I'm calling about Sugarloaf Holding Company's 41.5 acres of RM zoned multi-family land on Sugarloaf Parkway. I'm [YOUR NAME], a commercial developer.\n\nThis is an incredible multi-family tract. I see you have it listed for $7,900,000. I represent institutional buyers who want to acquire this immediately. What is the lowest board-approved number you would accept to enter a direct cash agreement with a 45-day close?",
-    "bs": "Acquisitions Team,\n\nFlagship institutional play: 41.5 acres zoned RM multi-family on Sugarloaf Pkwy, Lawrenceville. Massive development site, highly liquid submarket. Sellers asking $7.9M. We can assign with a premium structure that leaves significant profit margin. Complete engineering packet available.",
+    "bs": "Brand Properties / Wood Partners Acquisitions Team,\n\nFlagship institutional play: 41.5 acres zoned RM multi-family on Sugarloaf Pkwy, Lawrenceville. Massive development site, highly liquid submarket. Sellers asking $7.9M. We can assign with a premium structure that leaves significant profit margin. Complete engineering packet available.",
     "lev": "Corporate liquidation. Retiring partners are liquidating holding assets to execute a clean exit strategy."
   }
 ];
