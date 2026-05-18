@@ -1,9 +1,8 @@
-import jsPDF from 'jspdf'
-
 const fmt = (val: number) =>
   new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD', maximumFractionDigits: 0 }).format(val)
 
-export function generateBuyerDealSheet(deal: any) {
+export async function generateBuyerDealSheet(deal: any) {
+  const { default: jsPDF } = await import('jspdf')
   const doc = new jsPDF()
   const pageW = doc.internal.pageSize.getWidth()
 
